@@ -1,0 +1,58 @@
+from pandas import DataFrame
+import mysql.connector
+from mysql.connector import Error
+
+
+import jaydebeapi
+import pandas as pd
+
+############################### mariadb connexion
+
+try:
+    mySQLconnection = mysql.connector.connect(host='*****',
+                                              database='*****',
+                                              user='*****',
+                                              password='*****')
+
+    sql_select_Query = """ 
+     ;"""
+
+    cursor = mySQLconnection.cursor()
+    cursor.execute(sql_select_Query)
+    #    records = cursor.fetchall()
+    true_booking_antoine = DataFrame(cursor.fetchall())
+    print(true_booking_antoine.head())
+    true_booking_antoine.columns = cursor.column_names
+    print(true_booking_antoine.columns)
+    cursor.close()
+
+
+except Error as e:
+    print("Error while connecting to MySQL", e)
+finally:
+    # closing database connection.
+    if (mySQLconnection.is_connected()):
+        mySQLconnection.close()
+        print("MySQL connection is closed")
+
+
+
+############################### oracl connector with SID
+
+conn = jaydebeapi.connect("*****",
+                          "*****",
+                          ["id", "mdp"],
+                          "/home/*****/ojdbc7-12.1.0.2.0.jar",)
+
+curs = conn.cursor()
+curs.execute("alter session set current_schema= APPIA_DEV_ELIPSOS_INTL_4X" )
+curs.execute(
+            """ 
+              """)
+bkg = pd.DataFrame(curs.fetchall())
+print(bkg.head())
+print([i[0] for i in curs.description])
+bkg.columns = [i[0] for i in curs.description]
+
+curs.close()
+conn.close()
