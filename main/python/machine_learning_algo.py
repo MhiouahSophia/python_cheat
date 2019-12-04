@@ -29,6 +29,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 
 
+
+
 ########## SAMPLING
 #exemple1:
 
@@ -107,3 +109,4 @@ plt.yticks(pos[-30:], df_train.columns[sorted_idx][-30:])
 plt.xlabel('Relative Importance')
 plt.title('Variable Importance')
 plt.show()
+
